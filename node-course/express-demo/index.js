@@ -16,7 +16,6 @@ if ( app.get('env') === 'development'){
   console.log('Morgan enabled...')
 }
 
-
 app.use(logger);
 
 app.use(function(req, res, next) { // same as above but not exported from seperate file
