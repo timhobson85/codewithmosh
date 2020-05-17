@@ -20,6 +20,7 @@ const p2 = new Promise((resolve) => {
 
 // this returns when all included promises are resolved.
 // Promise.all([p1, p2])
+// this returns the result of the first fulfilled promise
 Promise.race([p1, p2])
   .then(result => console.log(result))
   .catch(err => console.log('error', err.message))

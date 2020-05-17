@@ -39,6 +39,7 @@ function getTopMovies() {
 
 function sendEmail(email, movies) {
   return new Promise((resolve, reject) => {
+    console.log('beep')
     setTimeout(() => {
       resolve();
     }, 500);
