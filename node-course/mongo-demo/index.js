@@ -43,6 +43,10 @@ async function getCourses() {
   // Logical Query Operators
   // or
   // and
+
+  const pageNumber = 2;
+  const pageSize = 10;
+  // api/courses?pageNumber=2&pageSize=10
   
   const result = await Course
     // .find({price: { $gt: 10, $lte: 20 } }) // $ indicates that it is an operator - this will return prices greater than $10 and less than or equal to $20
@@ -56,11 +60,60 @@ async function getCourses() {
     // Contains Mosh
     // .find({ author: /.*Mosh.*/i }) // i for case insensitive
     .find({ author: 'Mosh', isPublished: true }) // add object to filter
-    .limit(10)
+    // .skip((pageNumber -1) * pageSize) // used to impliment pagination
+    // .limit(pageSize)
     .sort({ name: 1 }) // ascending order, -1 is descending order
     .select({ name: 1, tags: 1 }) // only show these properties
     // .count(); // returns the number of documents that match criteria
   console.log(result);
 };
 
-getCourses();
+// async function updateCourse(id) {
+//   // approach: Query First
+//   // findById()
+//   // modify it's properties
+//   // save()
+//   const course = await Course.findById(id);
+//   if (!course) return;
+
+//   course.isPublished = true;
+//   course.author = 'Another Author'
+  
+//   // course.set({ // Same as above, just different
+//   //   isPublished: true,
+//   //   author: 'Another Author'
+//   // });
+
+//   const result = await course.save();
+//   console.log(result);
+// };
+
+async function updateCourse(id) {
+  // approach: Update first
+  // Update directly
+  // optionally: get the updated document
+  // const result = await Course.update({ _id: id }, { // returns the number of updates etc
+  //   $set: {
+  //     author: 'Mosssssssh',
+  //     isPublished: false
+  //   }
+  // });
+
+  const course = await Course.findByIdAndUpdate(id, {
+    $set: {
+      author: 'Jason'
+    }
+  }, { new: true }); // the new: true makes it return the changed entry, not the original entry
+  
+  console.log(course);
+}
+
+async function removeCourse(id) {
+  // const result = await Course.deleteMany({isPublished: true}); // will delete all that are set to true
+  // const result = await Course.deleteOne({_id: id});
+  const course = await Course.findByIdAndRemove(id);
+  // console.log(result)
+  console.log(course)
+}
+
+removeCourse('5ec0e87a5acea604ebed7b3a');
